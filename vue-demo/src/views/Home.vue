@@ -8,8 +8,8 @@
         </div>
         <!--      搜索区域-->
         <div>
-            <el-input v-model="search" placeholder="请输入关键字" style="width: 20%"/>
-            <el-button type="primary" style="margin-left: 5px">查询</el-button>
+            <el-input v-model="search" placeholder="请输入关键字" style="width: 20%" clearable/>
+            <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
         </div>
         <!--        数据展示-->
         <el-table :data="tableData" stripe style="width:100%" :default-sort="{prop: 'date', order: 'descending'}">
@@ -35,7 +35,7 @@
         <div style="margin: 10px 0">
             <!--            分页-->
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                           v-model:currentPage="currentPage" :page-sizes="[5, 10, 20]" :page-size="5"
+                           v-model:currentPage="currentPage" :page-sizes="[5, 10, 20]" :page-size="pageSize"
                            layout="total, sizes, prev, pager, next, jumper" :total="total"/>
             <!--            弹框-->
             <el-dialog v-model="dialogVisible" title="新增用户" width="30%" :before-close="handleClose">
@@ -82,14 +82,35 @@
                 dialogVisible: false,
                 search: '',
                 currentPage: 1,
+                pageSize: 5,
                 total: 10,
                 tableData: [],
             }
         },
+        // 页面加载时调用此方法
+        created() {
+            this.load();
+        },
+
         methods: {
+            load() {
+                // get传参请求
+                request.get("/api/user/pageFindUser", {
+                    params: {
+                        pageNum: this.currentPage,
+                        pageSize: this.pageSize,
+                        search: this.search
+                    }
+                }).then(res => {
+                    this.tableData = res.data.records;
+                    this.total = res.data.total;
+                })
+            },
             save() {
+                // post请求体请求
                 request.post("/api/user/saveUser", this.form).then(res => {
                     console.log(res);
+                    // 保存后结束对话框
                     this.dialogVisible = false;
                 })
             },
@@ -102,6 +123,9 @@
             handleSizeChange() {
             },
             handleCurrentChange() {
+            },
+            handleDelete() {
+
             }
         }
     }

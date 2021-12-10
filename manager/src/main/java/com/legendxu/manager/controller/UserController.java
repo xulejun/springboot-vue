@@ -39,8 +39,8 @@ public class UserController {
     @GetMapping("/pageFindUser")
     public Result<?> pageFindUser(@RequestParam(defaultValue = "1") Integer pageNum,
                                   @RequestParam(defaultValue = "10") Integer pageSize,
-                                  @RequestParam(required = false) String search) {
-        Page<User> page = userService.page(new Page<>(pageNum, pageSize), Wrappers.<User>lambdaQuery().like(User::getNickName, search));
+                                  @RequestParam(defaultValue = "") String search) {
+        Page<User> page = userService.page(new Page<>(pageNum, pageSize), Wrappers.<User>lambdaQuery().like(User::getUsername, search));
         return Result.success(page);
     }
 }
