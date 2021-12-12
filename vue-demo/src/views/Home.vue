@@ -22,11 +22,11 @@
             </el-table-column>
             <el-table-column fixed="right" label="操作">
                 <template #default="scope">
-                    <el-button size="mini" @click="handleEdit(scope.$index,scope.row)">编辑</el-button>
-                    <el-popconfirm title="确认删除吗？">
+                    <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+                    <!--                    气泡确认框 -->
+                    <el-popconfirm title="确认删除吗？" @confirm="handleDelete(scope.row.id)">
                         <template #reference>
-                            <el-button size="mini" type="danger" @click="handleDelete(scope.$index,scope.row)">删除
-                            </el-button>
+                            <el-button size="mini" type="danger">删除</el-button>
                         </template>
                     </el-popconfirm>
                 </template>
@@ -107,25 +107,84 @@
                 })
             },
             save() {
-                // post请求体请求
-                request.post("/api/user/saveUser", this.form).then(res => {
-                    console.log(res);
-                    // 保存后结束对话框
-                    this.dialogVisible = false;
-                })
+                // 当前表单有id，则更新，否则新增
+                if (this.form.id) {
+                    // put请求体请求
+                    request.put("/api/user/updateUser", this.form).then(res => {
+                        // 响应提示
+                        if (res.code === '0') {
+                            this.$message({
+                                type: "success",
+                                message: "更新成功"
+                            })
+                        } else {
+                            this.$message({
+                                type: "error",
+                                message: res.msg
+                            })
+                        }
+                    })
+                } else {
+                    // post请求体请求
+                    request.post("/api/user/saveUser", this.form).then(res => {
+                        // 响应提示
+                        if (res.code === '0') {
+                            this.$message({
+                                type: "success",
+                                message: "新增成功"
+                            })
+                        } else {
+                            this.$message({
+                                type: "error",
+                                message: res.msg
+                            })
+                        }
+                    })
+                }
+                // 保存后结束对话框
+                this.dialogVisible = false;
+                // 查询数据
+                this.load();
             },
             add() {
                 this.dialogVisible = true;
                 this.form = {}
             },
-            handleEdit() {
+            // 编辑
+            handleEdit(row) {
+                // 实际上就是打开新增弹窗按钮，将当前行的数据填充到表单中
+                this.form = JSON.parse(JSON.stringify(row));
+                this.dialogVisible = true
             },
-            handleSizeChange() {
+            // 改变当前每页的个数触发
+            handleSizeChange(pageSize) {
+                this.pageSize = pageSize;
+                this.load();
             },
-            handleCurrentChange() {
+            // 改变当前页码触发
+            handleCurrentChange(pageNum) {
+                this.currentPage = pageNum;
+                this.load();
             },
-            handleDelete() {
-
+            handleDelete(id) {
+                // delete接口调用
+                request.delete("/api/user/deleteUser/" + id).then(res => {
+                    // 响应结果提示
+                    if (res.code === '0') {
+                        this.$message({
+                            type: "success",
+                            message: "删除成功"
+                        })
+                    } else {
+                        this.$message({
+                            type: "error",
+                            message: res.message
+                        })
+                    }
+                    // 删除后关闭对话框
+                    this.dialogVisible = false;
+                    this.load()
+                })
             }
         }
     }

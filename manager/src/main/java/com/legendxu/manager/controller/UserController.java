@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
+ * 该Controller使用Restful接口规范，可不填子路径名，通过请求类型找到对应接口
+ *
  * @author legend xu
  * @date 2021/12/10
  */
@@ -25,6 +27,21 @@ public class UserController {
             user.setPassword("123456");
         }
         userService.save(user);
+        return Result.success();
+    }
+
+    @PutMapping("/updateUser")
+    public Result<?> updateUser(@RequestBody User user) {
+        if (StrUtil.isBlank(user.getPassword())) {
+            user.setPassword("123456");
+        }
+        userService.updateById(user);
+        return Result.success();
+    }
+
+    @DeleteMapping("/deleteUser/{id}")
+    public Result<?> updateUser(@PathVariable("id") Integer id) {
+        userService.removeById(id);
         return Result.success();
     }
 
