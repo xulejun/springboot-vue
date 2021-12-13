@@ -56,7 +56,7 @@
                 // 表单验证是否合法，否则不调用接口
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        request.post("/api/user/register", this.form).then(res => {
+                        request.post("/user/register", this.form).then(res => {
                             // 响应提示
                             if (res.code === '0') {
                                 this.$message({

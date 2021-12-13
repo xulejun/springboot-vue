@@ -41,13 +41,15 @@
                 // 表单验证是否合法
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        request.post("/api/user/login", this.form).then(res => {
+                        request.post("/user/login", this.form).then(res => {
                             // 响应提示
                             if (res.code === '0') {
                                 this.$message({
                                     type: "success",
                                     message: "登录成功"
                                 });
+                                // 缓存用户信息
+                                sessionStorage.setItem("user", JSON.stringify(res.data));
                                 // 登录成功之后进行页面跳转
                                 this.$router.push("/")
                             } else {

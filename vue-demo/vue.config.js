@@ -6,7 +6,7 @@ module.exports = {
         // 设置代理
         proxy: {
             // 设置拦截器，格式：斜杠+拦截器名字
-            'api': {
+            '/api': {
                 // 代理的目标地址
                 target: 'http://localhost:8096',
                 // 是否设置同源

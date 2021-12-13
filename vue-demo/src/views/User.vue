@@ -95,7 +95,7 @@
         methods: {
             load() {
                 // get传参请求
-                request.get("/api/user/pageFindUser", {
+                request.get("/user/pageFindUser", {
                     params: {
                         pageNum: this.currentPage,
                         pageSize: this.pageSize,
@@ -110,7 +110,7 @@
                 // 当前表单有id，则更新，否则新增
                 if (this.form.id) {
                     // put请求体请求
-                    request.put("/api/user/updateUser", this.form).then(res => {
+                    request.put("/user/updateUser", this.form).then(res => {
                         // 响应提示
                         if (res.code === '0') {
                             this.$message({
@@ -126,7 +126,7 @@
                     })
                 } else {
                     // post请求体请求
-                    request.post("/api/user/saveUser", this.form).then(res => {
+                    request.post("/user/saveUser", this.form).then(res => {
                         // 响应提示
                         if (res.code === '0') {
                             this.$message({
@@ -170,7 +170,7 @@
             // 删除
             handleDelete(id) {
                 // delete接口调用
-                request.delete("/api/user/deleteUser/" + id).then(res => {
+                request.delete("/user/deleteUser/" + id).then(res => {
                     // 响应结果提示
                     if (res.code === '0') {
                         this.$message({

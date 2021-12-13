@@ -1,6 +1,9 @@
 import axios from "axios";
+import router from "../router";
 
 let request = axios.create({
+    // 请求统一携带路径，vue.config.js中代理重写路径
+    baseURL: '/api',
     timeout: 5000
 });
 
@@ -10,6 +13,12 @@ let request = axios.create({
 request.interceptors.request.use(config => {
     config.headers['Content-Type'] = 'application/json;charset=utf-8';
     // config.headers['token'] = user.token; // 设置请求头
+
+    // 取出sessionStorage的用户缓存
+    let userJson = sessionStorage.getItem("user");
+    if (!userJson) {
+        router.push("/login");
+    }
     return config
 }, error => {
     return Promise.reject(error)
