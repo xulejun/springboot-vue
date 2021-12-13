@@ -146,6 +146,7 @@
                 // 查询数据
                 this.load();
             },
+            // 新增
             add() {
                 this.dialogVisible = true;
                 this.form = {}
@@ -166,6 +167,7 @@
                 this.currentPage = pageNum;
                 this.load();
             },
+            // 删除
             handleDelete(id) {
                 // delete接口调用
                 request.delete("/api/user/deleteUser/" + id).then(res => {

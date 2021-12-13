@@ -1,5 +1,6 @@
 package com.legendxu.manager.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -20,6 +21,28 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Autowired
     UserService userService;
+
+    @PostMapping("/login")
+    public Result<?> login(@RequestBody User user) {
+        User selectUser = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, user.getUsername()).eq(User::getPassword, user.getPassword()));
+        if (ObjectUtil.isEmpty(selectUser)) {
+            return Result.error("-1", "用户名或者密码错误");
+        }
+        return Result.success();
+    }
+
+    @PostMapping("/register")
+    public Result<?> register(@RequestBody User user) {
+        User selectUser = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, user.getUsername()));
+        if (ObjectUtil.isNotEmpty(selectUser)) {
+            return Result.error("-1", "用户名重复");
+        }
+        if (StrUtil.isBlank(user.getPassword())) {
+            user.setPassword("123456");
+        }
+        userService.save(user);
+        return Result.success();
+    }
 
     @PostMapping("/saveUser")
     public Result<?> saveUser(@RequestBody User user) {
