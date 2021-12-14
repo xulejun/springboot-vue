@@ -11,13 +11,14 @@ let request = axios.create({
 // 可以自请求发送前对请求做一些处理
 // 比如统一加token，对请求参数统一加密
 request.interceptors.request.use(config => {
+    // console.log("进入拦截器");
     config.headers['Content-Type'] = 'application/json;charset=utf-8';
     // config.headers['token'] = user.token; // 设置请求头
 
     // 取出sessionStorage的用户缓存
     let userJson = sessionStorage.getItem("user");
     if (!userJson) {
-        router.push("/login");
+        router.push('/login');
     }
     return config
 }, error => {

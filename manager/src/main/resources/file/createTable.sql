@@ -26,3 +26,12 @@ INSERT INTO personal.vue_user (username, password, nick_name, age, sex, address)
 INSERT INTO personal.vue_user (username, password, nick_name, age, sex, address) VALUES ('派克', '123456', '血港鬼影', 36, '男', '比尔吉沃特');
 INSERT INTO personal.vue_user (username, password, nick_name, age, sex, address) VALUES ('沙皇', '123456', '沙漠皇帝', 99, '男', '恕瑞玛');
 INSERT INTO personal.vue_user (username, password, nick_name, age, sex, address) VALUES ('大虫子', '123456', '虚空恐惧', 76, '男', '虚空之地');
+
+INSERT INTO personal.product (name, price, stock, create_time) VALUES ('小米8屏幕指纹版', 2699, '0', '2021-12-12 08:00:00');
+INSERT INTO personal.product (name, price, stock, create_time) VALUES ('膳魔师保温杯', 169, '12', '2021-12-14 00:00:00');
+INSERT INTO personal.product (name, price, stock, create_time) VALUES ('马克杯', 12, '88', '2021-12-08 00:00:00');
+INSERT INTO personal.product (name, price, stock, create_time) VALUES ('Lenovo无线鼠标', 88, '102', '2021-12-14 09:38:22');
+INSERT INTO personal.product (name, price, stock, create_time) VALUES ('Lenovo键盘', 77, '89', '2021-12-14 09:38:53');
+INSERT INTO personal.product (name, price, stock, create_time) VALUES ('ThinkPad笔记本', 6999, '123', '2021-12-14 09:39:29');
+INSERT INTO personal.product (name, price, stock, create_time) VALUES ('ThinkVison显示器', 799, '14', '2021-12-14 09:40:17');
+INSERT INTO personal.product (name, price, stock, create_time) VALUES ('李宁跑鞋', 399, '786', '2021-12-14 09:40:59');

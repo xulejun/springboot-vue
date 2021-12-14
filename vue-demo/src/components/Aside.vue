@@ -7,7 +7,7 @@
                 router
                 class="el-menu-vertical-demo"
                 style="width: 200px;min-height: calc(100vh - 50px)">
-            <el-sub-menu index="1">
+            <el-sub-menu index="/manage">
                 <template #title>系统管理</template>
                 <el-menu-item index="/user">用户管理</el-menu-item>
             </el-sub-menu>

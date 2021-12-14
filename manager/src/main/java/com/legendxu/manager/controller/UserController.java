@@ -28,7 +28,7 @@ public class UserController {
         if (ObjectUtil.isEmpty(selectUser)) {
             return Result.error("-1", "用户名或者密码错误");
         }
-        return Result.success();
+        return Result.success(selectUser);
     }
 
     @PostMapping("/register")
@@ -83,4 +83,15 @@ public class UserController {
         Page<User> page = userService.page(new Page<>(pageNum, pageSize), Wrappers.<User>lambdaQuery().like(User::getUsername, search));
         return Result.success(page);
     }
+
+    @GetMapping("/userInfo")
+    public Result<?> userInfo(@RequestParam String username) {
+        User user = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, username));
+        if (ObjectUtil.isEmpty(user)) {
+            return Result.error("-1", "当前用户不存在");
+        }
+        return Result.success(user);
+    }
+
+
 }

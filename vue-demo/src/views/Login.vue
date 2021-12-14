@@ -8,10 +8,13 @@
                     <el-input prefix-icon="el-icon-user-solid" v-model="form.username"></el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input prefix-icon="el-icon-lock" v-model="form.password" show-password></el-input>
+                    <!--                    键盘回车事件-->
+                    <el-input prefix-icon="el-icon-lock" v-model="form.password" show-password
+                              @keydown.enter.native="login"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button style="width: 100%" type="primary" @click="login">登 录</el-button>
+                    <el-button style="width: 100%" type="primary" @click="login" @keydown.enter.native="login">登 录
+                    </el-button>
                 </el-form-item>
             </el-form>
         </div>

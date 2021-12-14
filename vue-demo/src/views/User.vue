@@ -8,7 +8,7 @@
         </div>
         <!--      搜索区域-->
         <div>
-            <el-input v-model="search" placeholder="请输入关键字" style="width: 20%" clearable/>
+            <el-input v-model="search" placeholder="请输入关键字" style="width: 20%" clearable @keydown.enter.native="load"/>
             <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
         </div>
         <!--        数据展示-->
