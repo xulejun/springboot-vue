@@ -12,20 +12,12 @@
         <!--        数据展示-->
         <el-table :data="tableData" stripe style="width:100%" :default-sort="{prop: 'date', order: 'descending'}">
             <el-table-column prop="id" label="ID" sortable=""/>
-            <el-table-column prop="name" label="商品名称"/>
-            <el-table-column prop="price" label="单价"/>
-            <el-table-column prop="stock" label="库存"/>
-            <el-table-column prop="createTime" label="上线时间"/>
-            <el-table-column label="图片展示">
-                <template #default="scope">
-                    <el-image
-                            style="width: 100px; height: 100px"
-                            :src="scope.row.path"
-                            :preview-src-list="[scope.row.path]"/>
-                </template>
-            </el-table-column>
+            <el-table-column prop="title" label="标题"/>
+            <el-table-column prop="author" label="作者"/>
+            <el-table-column prop="createTime" label="创建时间"/>
             <el-table-column fixed="right" label="操作">
                 <template #default="scope">
+                    <el-button size="mini" @click="detailsMethod(scope.row)">详情</el-button>
                     <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
                     <!--                    气泡确认框 -->
                     <el-popconfirm title="确认删除吗？" @confirm="handleDelete(scope.row.id)">
@@ -42,33 +34,15 @@
                            v-model:currentPage="currentPage" :page-sizes="[5, 10, 20]" :page-size="pageSize"
                            layout="total, sizes, prev, pager, next, jumper" :total="total"/>
             <!--            弹框-->
-            <el-dialog v-model="dialogVisible" title="新增商品" width="30%" :before-close="handleClose">
+            <el-dialog v-model="dialogVisible" title="新增内容" width="70%" :before-close="handleClose">
                 <!--                新增表单-->
-                <el-form :model="form" label-width="120px" style="width: 80%">
-                    <el-form-item label="商品名称">
-                        <el-input v-model="form.name"/>
+                <el-form :model="form" label-width="120px" style="width: 90%">
+                    <el-form-item label="标题">
+                        <el-input v-model="form.title"/>
                     </el-form-item>
-                    <el-form-item label="单价">
-                        <el-input v-model="form.price"/>
-                    </el-form-item>
-                    <el-form-item label="库存">
-                        <el-input v-model="form.stock"/>
-                    </el-form-item>
-                    <el-form-item label="上线时间">
-                        <el-date-picker
-                                v-model="form.createTime"
-                                type="datetime"
-                                placeholder="选择日期时间"
-                                :default-time="defaultTime"
-                                clearable>
-                        </el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="上传图片">
-                        <!--                        上传图片调用后端接口，需要解决后端跨域问题，成功后将图片路径保存到数据库中-->
-                        <el-upload ref="upload" action="http://localhost:8096/product/uploadFile"
-                                   :on-success="fileUpload">
-                            <el-button size="small" type="primary">点击上传</el-button>
-                        </el-upload>
+                    <el-form-item label="详情">
+                        <div id="div1">
+                        </div>
                     </el-form-item>
                 </el-form>
                 <!--                确认框-->
@@ -79,15 +53,23 @@
                   </span>
                 </template>
             </el-dialog>
+            <el-dialog v-model="vis" title="详情内容" width="50%">
+                <el-card>
+                    <div v-html="rowData.details" style="min-height: 100px"></div>
+                </el-card>
+            </el-dialog>
         </div>
     </div>
 </template>
 
 <script>
     import request from "@/utils/request";
+    import E from 'wangeditor';
+
+    let editor;
 
     export default {
-        name: 'Product',
+        name: 'Content',
         components: {},
         data() {
             return {
@@ -98,7 +80,8 @@
                 pageSize: 5,
                 total: 10,
                 tableData: [],
-                photoUrl: 'http://localhost:8096/product/download/89d5482cac2649ae919d7d9eb3d14707'
+                vis: false,
+                rowData: {},
             }
         },
         // 页面加载时调用此方法
@@ -107,12 +90,13 @@
         },
 
         methods: {
-            fileUpload(res) {
-                this.form.path = res.data
+            detailsMethod(row) {
+                this.rowData = row;
+                this.vis = true;
             },
             load() {
                 // get传参请求
-                request.get("/product/pageFindProduct", {
+                request.get("/content/pageFindContent", {
                     params: {
                         pageNum: this.currentPage,
                         pageSize: this.pageSize,
@@ -124,10 +108,13 @@
                 })
             },
             save() {
+                // 获取富文本内容和作者
+                this.form.details = editor.txt.html();
+                this.form.author = JSON.parse(sessionStorage.getItem("user")).username;
                 // 当前表单有id，则更新，否则新增
                 if (this.form.id) {
                     // put请求体请求
-                    request.put("/product/updateProduct", this.form).then(res => {
+                    request.put("/content/updateContent", this.form).then(res => {
                         // 响应提示
                         if (res.code === '0') {
                             this.$message({
@@ -143,7 +130,7 @@
                     })
                 } else {
                     // post请求体请求
-                    request.post("/product/saveProduct", this.form).then(res => {
+                    request.post("/content/saveContent", this.form).then(res => {
                         // 响应提示
                         if (res.code === '0') {
                             this.$message({
@@ -167,22 +154,30 @@
             add() {
                 this.dialogVisible = true;
                 this.form = {};
-                if (this.$refs['upload']) {
-                    // 清除历史上传列表
-                    this.$refs['upload'].clearFiles();
-                }
+                this.$nextTick(() => {
+                    if (!editor) {
+                        editor = new E('#div1');
+                        // 上传图片接口地址
+                        editor.config.uploadImgServer = 'http://localhost:8096/content/uploadImg';
+                        // 图片参数名称，与后端接口参数名一致
+                        editor.config.uploadFileName = 'file';
+                        editor.create();
+                    }
+                    // 清除编辑器里的内容
+                    editor.txt.clear();
+                });
             },
             // 编辑
             handleEdit(row) {
                 // 实际上就是打开新增弹窗按钮，将当前行的数据填充到表单中
                 this.form = JSON.parse(JSON.stringify(row));
                 this.dialogVisible = true;
-                // 解决dom不存在的问题（编辑是异步操作，找不到uplad的引用，会抛出undefined）
                 this.$nextTick(() => {
-                    if (this.$refs['upload']) {
-                        // 清除历史上传列表
-                        this.$refs['upload'].clearFiles();
+                    if (!editor) {
+                        editor = new E('#div1');
+                        editor.create();
                     }
+                    editor.txt.html(row.details);
                 });
             },
             // 改变当前每页的个数触发
@@ -198,7 +193,7 @@
             // 删除
             handleDelete(id) {
                 // delete接口调用
-                request.delete("/product/deleteProduct/" + id).then(res => {
+                request.delete("/content/deleteContent/" + id).then(res => {
                     // 响应结果提示
                     if (res.code === '0') {
                         this.$message({
