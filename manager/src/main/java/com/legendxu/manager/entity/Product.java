@@ -40,6 +40,11 @@ public class Product {
     private String stock;
 
     /**
+     * 图片路径
+     */
+    private String path;
+
+    /**
      * 时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GTM+8")

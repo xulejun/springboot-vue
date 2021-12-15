@@ -16,6 +16,14 @@
             <el-table-column prop="price" label="单价"/>
             <el-table-column prop="stock" label="库存"/>
             <el-table-column prop="createTime" label="上线时间"/>
+            <el-table-column label="图片展示">
+                <template #default="scope">
+                    <el-image
+                            style="width: 100px; height: 100px"
+                            :src="scope.row.path"
+                            :preview-src-list="[scope.row.path]"/>
+                </template>
+            </el-table-column>
             <el-table-column fixed="right" label="操作">
                 <template #default="scope">
                     <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
@@ -55,6 +63,13 @@
                                 clearable>
                         </el-date-picker>
                     </el-form-item>
+                    <el-form-item label="上传图片">
+                        <!--                        上传图片调用后端接口，需要解决后端跨域问题，成功后将图片路径保存到数据库中-->
+                        <el-upload ref="upload" action="http://localhost:8096/product/uploadFile"
+                                   :on-success="fileUpload">
+                            <el-button size="small" type="primary">点击上传</el-button>
+                        </el-upload>
+                    </el-form-item>
                 </el-form>
                 <!--                确认框-->
                 <template #footer>
@@ -83,6 +98,7 @@
                 pageSize: 5,
                 total: 10,
                 tableData: [],
+                photoUrl: 'http://localhost:8096/product/download/89d5482cac2649ae919d7d9eb3d14707'
             }
         },
         // 页面加载时调用此方法
@@ -91,6 +107,9 @@
         },
 
         methods: {
+            fileUpload(res) {
+                this.form.path = res.data
+            },
             load() {
                 // get传参请求
                 request.get("/product/pageFindProduct", {
@@ -147,13 +166,20 @@
             // 新增
             add() {
                 this.dialogVisible = true;
-                this.form = {}
+                this.form = {};
+                // 清除历史上传列表
+                this.$refs['upload'].clearFiles();
             },
             // 编辑
             handleEdit(row) {
                 // 实际上就是打开新增弹窗按钮，将当前行的数据填充到表单中
                 this.form = JSON.parse(JSON.stringify(row));
-                this.dialogVisible = true
+                this.dialogVisible = true;
+                // 解决dom不存在的问题（编辑是异步操作，找不到uplad的引用，会抛出undefined）
+                this.$nextTick(() => {
+                    // 清除历史上传列表
+                    this.$refs['upload'].clearFiles();
+                });
             },
             // 改变当前每页的个数触发
             handleSizeChange(pageSize) {

@@ -11,6 +11,19 @@ CREATE TABLE `vue_user`
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8 COMMENT ='前后端分离的用户表';
+-- product: table
+CREATE TABLE `product`
+(
+    `id`          int(11) NOT NULL AUTO_INCREMENT,
+    `name`        varchar(100)   DEFAULT NULL COMMENT '商品名称',
+    `price`       decimal(10, 0) DEFAULT NULL COMMENT '价格',
+    `stock`       varchar(255)   DEFAULT NULL COMMENT '库存',
+    `path`        varchar(255)   DEFAULT NULL COMMENT '图片路径',
+    `create_time` datetime       DEFAULT NULL COMMENT '时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8;
 -- 插入数据
 INSERT INTO personal.vue_user (username, password, nick_name, age, sex, address) VALUES ('盖伦', '123456', '德玛西亚之力', 20, '男', '德玛西亚');
 INSERT INTO personal.vue_user (username, password, nick_name, age, sex, address) VALUES ('菲奥娜', '123456', '无双剑姬', 22, '女', '德玛西亚');
@@ -27,11 +40,10 @@ INSERT INTO personal.vue_user (username, password, nick_name, age, sex, address)
 INSERT INTO personal.vue_user (username, password, nick_name, age, sex, address) VALUES ('沙皇', '123456', '沙漠皇帝', 99, '男', '恕瑞玛');
 INSERT INTO personal.vue_user (username, password, nick_name, age, sex, address) VALUES ('大虫子', '123456', '虚空恐惧', 76, '男', '虚空之地');
 
-INSERT INTO personal.product (name, price, stock, create_time) VALUES ('小米8屏幕指纹版', 2699, '0', '2021-12-12 08:00:00');
-INSERT INTO personal.product (name, price, stock, create_time) VALUES ('膳魔师保温杯', 169, '12', '2021-12-14 00:00:00');
-INSERT INTO personal.product (name, price, stock, create_time) VALUES ('马克杯', 12, '88', '2021-12-08 00:00:00');
-INSERT INTO personal.product (name, price, stock, create_time) VALUES ('Lenovo无线鼠标', 88, '102', '2021-12-14 09:38:22');
-INSERT INTO personal.product (name, price, stock, create_time) VALUES ('Lenovo键盘', 77, '89', '2021-12-14 09:38:53');
-INSERT INTO personal.product (name, price, stock, create_time) VALUES ('ThinkPad笔记本', 6999, '123', '2021-12-14 09:39:29');
-INSERT INTO personal.product (name, price, stock, create_time) VALUES ('ThinkVison显示器', 799, '14', '2021-12-14 09:40:17');
-INSERT INTO personal.product (name, price, stock, create_time) VALUES ('李宁跑鞋', 399, '786', '2021-12-14 09:40:59');
+INSERT INTO personal.product (name, price, stock, path, create_time) VALUES ('小米8屏幕指纹版', 2699, '0', 'http://localhost:8096/product/download/5b509adbfc1c47f4b8b7e3924b67dcd8', '2021-12-12 08:00:00');
+INSERT INTO personal.product (name, price, stock, path, create_time) VALUES ('膳魔师保温杯', 169, '12', 'http://localhost:8096/product/download/415037a89d6e4be5b61496b8cbacb6f9', '2021-12-13 08:00:00');
+INSERT INTO personal.product (name, price, stock, path, create_time) VALUES ('马克杯', 12, '88', 'http://localhost:8096/product/download/ff942ca3318840f1a1a24cfeda36b6b6', '2021-12-07 08:00:00');
+INSERT INTO personal.product (name, price, stock, path, create_time) VALUES ('Lenovo无线鼠标', 88, '102', 'http://localhost:8096/product/download/c097ae5873114ff89a9146f26775f749', '2021-12-14 08:00:00');
+INSERT INTO personal.product (name, price, stock, path, create_time) VALUES ('ThinkPad笔记本', 6999, '123', 'http://localhost:8096/product/download/db1429526d3544078c6896dd94a497bf', '2021-12-14 08:00:00');
+INSERT INTO personal.product (name, price, stock, path, create_time) VALUES ('ThinkVison显示器', 799, '14', null, '2021-12-14 09:40:17');
+INSERT INTO personal.product (name, price, stock, path, create_time) VALUES ('李宁跑鞋', 399, '786', null, '2021-12-14 09:40:59');
