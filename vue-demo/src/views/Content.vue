@@ -14,7 +14,7 @@
             <el-table-column prop="id" label="ID" sortable=""/>
             <el-table-column prop="title" label="标题"/>
             <el-table-column prop="author" label="作者"/>
-            <el-table-column prop="createTime" label="创建时间"/>
+            <el-table-column prop="createTime" label="创建时间" value-format="yyyy-MM-dd HH:mm:ss"/>
             <el-table-column fixed="right" label="操作">
                 <template #default="scope">
                     <el-button size="mini" @click="detailsMethod(scope.row)">详情</el-button>
@@ -113,6 +113,7 @@
                 this.form.author = JSON.parse(sessionStorage.getItem("user")).username;
                 // 当前表单有id，则更新，否则新增
                 if (this.form.id) {
+                    this.form.createTime = '';
                     // put请求体请求
                     request.put("/content/updateContent", this.form).then(res => {
                         // 响应提示
