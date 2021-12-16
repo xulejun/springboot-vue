@@ -18,13 +18,15 @@
             <el-table-column fixed="right" label="操作">
                 <template #default="scope">
                     <el-button size="mini" @click="detailsMethod(scope.row)">详情</el-button>
-                    <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-                    <!--                    气泡确认框 -->
-                    <el-popconfirm title="确认删除吗？" @confirm="handleDelete(scope.row.id)">
-                        <template #reference>
-                            <el-button size="mini" type="danger">删除</el-button>
-                        </template>
-                    </el-popconfirm>
+                    <div v-if="user.role ==='1'">
+                        <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+                        <!--                    气泡确认框 -->
+                        <el-popconfirm title="确认删除吗？" @confirm="handleDelete(scope.row.id)">
+                            <template #reference>
+                                <el-button size="mini" type="danger">删除</el-button>
+                            </template>
+                        </el-popconfirm>
+                    </div>
                 </template>
             </el-table-column>
         </el-table>
@@ -82,10 +84,13 @@
                 tableData: [],
                 vis: false,
                 rowData: {},
+                user: {},
             }
         },
         // 页面加载时调用此方法
         created() {
+            const userSession = sessionStorage.getItem("user") ? sessionStorage.getItem("user") : "{}";
+            this.user = JSON.parse(userSession);
             this.load();
         },
 

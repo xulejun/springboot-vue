@@ -18,7 +18,12 @@
             <el-table-column prop="nickName" label="昵称"/>
             <el-table-column prop="age" label="年龄"/>
             <el-table-column prop="sex" label="性别"/>
-            <el-table-column prop="address" label="地址" :formatter="formatter">
+            <el-table-column prop="address" label="地址" :formatter="formatter"/>
+            <el-table-column prop="role" label="角色">
+                <template #default="scope">
+                    <span v-if="scope.row.role === '1'">管理员</span>
+                    <span v-if="scope.row.role === '2'">普通用户</span>
+                </template>
             </el-table-column>
             <el-table-column fixed="right" label="操作">
                 <template #default="scope">
@@ -85,10 +90,13 @@
                 pageSize: 5,
                 total: 10,
                 tableData: [],
+                user: {}
             }
         },
         // 页面加载时调用此方法
         created() {
+            const userSession = sessionStorage.getItem("user") ? sessionStorage.getItem("user") : "{}";
+            this.user = JSON.parse(userSession);
             this.load();
         },
 

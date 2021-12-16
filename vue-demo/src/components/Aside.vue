@@ -3,11 +3,10 @@
         <!--        通过 router+index属性 进行对应的路由；default-active选中高亮，：为变量-->
         <el-menu
                 :default-active="path"
-                :default-openeds="[1]"
                 router
                 class="el-menu-vertical-demo"
                 style="width: 200px;min-height: calc(100vh - 50px)">
-            <el-sub-menu index="/manage">
+            <el-sub-menu index="/manage" v-if="user.role === '1'">
                 <template #title>系统管理</template>
                 <el-menu-item index="/user">用户管理</el-menu-item>
             </el-sub-menu>
@@ -31,8 +30,13 @@
         name: "Aside",
         data() {
             return {
-                path: this.$route.path
+                path: this.$route.path,
+                user: {}
             }
+        },
+        created() {
+            const userSession = sessionStorage.getItem("user") ? sessionStorage.getItem("user") : "{}";
+            this.user = JSON.parse(userSession);
         }
     }
 </script>

@@ -49,4 +49,9 @@ public class User {
      * 地址
      */
     private String address;
+
+    /**
+     * 角色：1-管理员，2-普通用户
+     */
+    private String role;
 }

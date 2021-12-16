@@ -24,7 +24,7 @@
                             :preview-src-list="[scope.row.path]"/>
                 </template>
             </el-table-column>
-            <el-table-column fixed="right" label="操作">
+            <el-table-column fixed="right" label="操作" v-if="user.role === '1'">
                 <template #default="scope">
                     <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
                     <!--                    气泡确认框 -->
@@ -98,11 +98,13 @@
                 pageSize: 5,
                 total: 10,
                 tableData: [],
-                photoUrl: 'http://localhost:8096/product/download/89d5482cac2649ae919d7d9eb3d14707'
+                user: {},
             }
         },
         // 页面加载时调用此方法
         created() {
+            const userSession = sessionStorage.getItem("user") ? sessionStorage.getItem("user") : "{}";
+            this.user = JSON.parse(userSession);
             this.load();
         },
 

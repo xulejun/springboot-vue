@@ -54,7 +54,7 @@
                                 // 缓存用户信息
                                 sessionStorage.setItem("user", JSON.stringify(res.data));
                                 // 登录成功之后进行页面跳转
-                                this.$router.push("/")
+                                this.$router.push("/content")
                             } else {
                                 this.$message({
                                     type: "error",
