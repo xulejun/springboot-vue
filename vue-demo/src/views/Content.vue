@@ -3,6 +3,7 @@
         <!--      功能区域-->
         <div style="margin: 10px 0">
             <el-button type="primary" @click="add">新增</el-button>
+            <el-button type="danger" @click="bathDelete">批量删除</el-button>
         </div>
         <!--      搜索区域-->
         <div>
@@ -10,7 +11,9 @@
             <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
         </div>
         <!--        数据展示-->
-        <el-table :data="tableData" stripe style="width:100%" :default-sort="{prop: 'date', order: 'descending'}">
+        <el-table :data="tableData" stripe style="width:100%" :default-sort="{prop: 'date', order: 'descending'}"
+                  @selection-change="handleSelectionChange">
+            <el-table-column type="selection" width="55"/>
             <el-table-column prop="id" label="ID" sortable=""/>
             <el-table-column prop="title" label="标题"/>
             <el-table-column prop="author" label="作者"/>
@@ -34,7 +37,7 @@
             <!--            分页-->
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                            v-model:currentPage="currentPage" :page-sizes="[5, 10, 20]" :page-size="pageSize"
-                           layout="total, sizes, prev, pager, next, jumper" :total="total"/>
+                           layout="total, sizes, prev, pager, next, jumper" :total="100"/>
             <!--            弹框-->
             <el-dialog v-model="dialogVisible" title="新增内容" width="70%" :before-close="handleClose">
                 <!--                新增表单-->
@@ -85,6 +88,7 @@
                 vis: false,
                 rowData: {},
                 user: {},
+                ids: []
             }
         },
         // 页面加载时调用此方法
@@ -95,6 +99,32 @@
         },
 
         methods: {
+            bathDelete() {
+                console.log(this.ids);
+                if (this.ids.length === 0) {
+                    this.$message.error("请选择删除的数据");
+                    return
+                }
+                request.post("/content/bathDelete", this.ids).then(res => {
+                    // 响应提示
+                    if (res.code === '0') {
+                        this.$message({
+                            type: "success",
+                            message: "删除成功"
+                        })
+                    } else {
+                        this.$message({
+                            type: "error",
+                            message: res.msg
+                        })
+                    }
+                    this.load();
+                })
+            },
+            // 将全选中的元素只获取id
+            handleSelectionChange(val) {
+                this.ids = val.map(row => row.id);
+            },
             detailsMethod(row) {
                 this.rowData = row;
                 this.vis = true;
@@ -164,7 +194,7 @@
                     if (!editor) {
                         editor = new E('#div1');
                         // 上传图片接口地址
-                        editor.config.uploadImgServer = 'http://' +  window.server.fileUploadUrl + ':8096/content/uploadImg';
+                        editor.config.uploadImgServer = 'http://' + window.server.fileUploadUrl + ':8096/content/uploadImg';
                         // 图片参数名称，与后端接口参数名一致
                         editor.config.uploadFileName = 'file';
                         editor.create();

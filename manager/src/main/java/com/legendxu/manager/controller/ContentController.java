@@ -91,6 +91,12 @@ public class ContentController {
         return Result.success();
     }
 
+    @PostMapping("/bathDelete")
+    public Result<?> updateContent(@RequestBody List<Integer> ids) {
+        contentService.removeByIds(ids);
+        return Result.success();
+    }
+
     /**
      * 分页查询
      *
