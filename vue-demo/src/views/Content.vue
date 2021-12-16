@@ -164,7 +164,7 @@
                     if (!editor) {
                         editor = new E('#div1');
                         // 上传图片接口地址
-                        editor.config.uploadImgServer = 'http://localhost:8096/content/uploadImg';
+                        editor.config.uploadImgServer = 'http://' +  window.server.fileUploadUrl + ':8096/content/uploadImg';
                         // 图片参数名称，与后端接口参数名一致
                         editor.config.uploadFileName = 'file';
                         editor.create();

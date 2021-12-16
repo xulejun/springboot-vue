@@ -65,7 +65,7 @@
                     </el-form-item>
                     <el-form-item label="上传图片">
                         <!--                        上传图片调用后端接口，需要解决后端跨域问题，成功后将图片路径保存到数据库中-->
-                        <el-upload ref="upload" action="http://localhost:8096/product/uploadFile"
+                        <el-upload ref="upload" action="uploadUrl"
                                    :on-success="fileUpload">
                             <el-button size="small" type="primary">点击上传</el-button>
                         </el-upload>
@@ -99,6 +99,7 @@
                 total: 10,
                 tableData: [],
                 user: {},
+                uploadUrl: "http://" + window.server.fileUploadUrl + ":8096/product/uploadFile"
             }
         },
         // 页面加载时调用此方法
