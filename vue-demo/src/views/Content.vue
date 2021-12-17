@@ -3,7 +3,7 @@
         <!--      功能区域-->
         <div style="margin: 10px 0">
             <el-button type="primary" @click="add">新增</el-button>
-            <el-button type="danger" @click="bathDelete">批量删除</el-button>
+            <el-button type="danger" @click="bathDelete" v-if="user.role==='1'">批量删除</el-button>
         </div>
         <!--      搜索区域-->
         <div>
@@ -37,7 +37,7 @@
             <!--            分页-->
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                            v-model:currentPage="currentPage" :page-sizes="[5, 10, 20]" :page-size="pageSize"
-                           layout="total, sizes, prev, pager, next, jumper" :total="100"/>
+                           layout="total, sizes, prev, pager, next, jumper" :total="total"/>
             <!--            弹框-->
             <el-dialog v-model="dialogVisible" title="新增内容" width="70%" :before-close="handleClose">
                 <!--                新增表单-->
