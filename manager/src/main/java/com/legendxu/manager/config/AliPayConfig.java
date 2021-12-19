@@ -3,6 +3,7 @@ package com.legendxu.manager.config;
 import com.alipay.easysdk.factory.Factory;
 import com.alipay.easysdk.kernel.Config;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import javax.annotation.PostConstruct;
  *
  * @author lejunxu
  */
+@Slf4j
 @Data
 @Component
 public class AliPayConfig {
@@ -38,6 +40,6 @@ public class AliPayConfig {
         config.alipayPublicKey = this.alipayPublicKey;
         config.notifyUrl = this.notifyUrl;
         Factory.setOptions(config);
-        System.out.println("=======支付宝SDK初始化成功=======");
+        log.info("=======支付宝SDK初始化成功=======");
     }
 }

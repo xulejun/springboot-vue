@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS vue_user;
 CREATE TABLE `vue_user`
 (
     `id`        int(11) NOT NULL AUTO_INCREMENT,
@@ -7,11 +8,13 @@ CREATE TABLE `vue_user`
     `age`       int(11)      DEFAULT NULL COMMENT '年龄',
     `sex`       varchar(2)   DEFAULT NULL COMMENT '性别',
     `address`   varchar(100) DEFAULT NULL COMMENT '地址',
+    `role`   varchar(10) DEFAULT '2' COMMENT '角色：1-管理员，2-普通用户',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 0
   DEFAULT CHARSET = utf8 COMMENT ='前后端分离的用户表';
 -- product: table
+DROP TABLE IF EXISTS product;
 CREATE TABLE `product`
 (
     `id`          int(11) NOT NULL AUTO_INCREMENT,
@@ -25,6 +28,7 @@ CREATE TABLE `product`
   AUTO_INCREMENT = 0
   DEFAULT CHARSET = utf8;
 -- content: table
+DROP TABLE IF EXISTS content;
 CREATE TABLE `content`
 (
     `id`          int(11) NOT NULL AUTO_INCREMENT,
