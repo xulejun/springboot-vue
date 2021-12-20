@@ -2,9 +2,14 @@ package com.legendxu.manager.controller;
 
 import com.alipay.easysdk.factory.Factory;
 import com.alipay.easysdk.payment.page.models.AlipayTradePagePayResponse;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.google.common.collect.Maps;
 import com.legendxu.manager.entity.AliPay;
+import com.legendxu.manager.entity.OrderInfo;
+import com.legendxu.manager.service.OrderInfoService;
+import com.legendxu.manager.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +28,12 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/alipay")
 public class AliPayController {
+
+    @Autowired
+    OrderInfoService orderService;
+
+    @Autowired
+    ProductService productService;
 
     @GetMapping("/pay")
     public String pay(AliPay aliPay) {
@@ -44,9 +55,6 @@ public class AliPayController {
             for (String name : requestParams.keySet()) {
                 params.put(name, request.getParameter(name));
             }
-            String tradeNo = params.get("out_trade_no");
-            String payment = params.get("gmt_payment");
-
             // 支付宝验签
             try {
                 if (Factory.Payment.Common().verifyNotify(params)) {
@@ -60,6 +68,15 @@ public class AliPayController {
                     log.info("买家付款金额：{}", params.get("buyer_pay_amount"));
                 }
                 // 更新订单 未/已支付
+                OrderInfo orderInfo = new OrderInfo();
+                orderInfo.setTradeNo(params.get("trade_no"));
+                orderInfo.setPayAmount(params.get("buyer_pay_amount"));
+                orderInfo.setBuyerId(params.get("buyer_id"));
+                orderInfo.setStatus(1);
+                orderInfo.setPayTime(params.get("gmt_payment"));
+                orderService.update(orderInfo, Wrappers.<OrderInfo>lambdaUpdate().eq(OrderInfo::getSkuTradeNo, params.get("out_trade_no")));
+                // 更新库存
+                productService.reduceStockByName(params.get("subject"));
             } catch (Exception e) {
                 log.warn("支付宝验签异常：", e);
             }

@@ -20,15 +20,17 @@
             <el-table-column prop="createTime" label="创建时间" value-format="yyyy-MM-dd HH:mm:ss"/>
             <el-table-column fixed="right" label="操作">
                 <template #default="scope">
-                    <el-button size="mini" @click="detailsMethod(scope.row)">详情</el-button>
-                    <div v-if="user.role ==='1'">
-                        <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-                        <!--                    气泡确认框 -->
-                        <el-popconfirm title="确认删除吗？" @confirm="handleDelete(scope.row.id)">
-                            <template #reference>
-                                <el-button size="mini" type="danger">删除</el-button>
-                            </template>
-                        </el-popconfirm>
+                    <div style="display: flex">
+                        <el-button size="mini" @click="detailsMethod(scope.row)" type="primary" style="margin-right: 10px">详情</el-button>
+                        <div v-if="user.role ==='1'">
+                            <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+                            <!--                    气泡确认框 -->
+                            <el-popconfirm title="确认删除吗？" @confirm="handleDelete(scope.row.id)">
+                                <template #reference>
+                                    <el-button size="mini" type="danger">删除</el-button>
+                                </template>
+                            </el-popconfirm>
+                        </div>
                     </div>
                 </template>
             </el-table-column>

@@ -11,6 +11,7 @@
                 <el-menu-item index="/user">用户管理</el-menu-item>
             </el-sub-menu>
             <el-menu-item index="/product">商品管理</el-menu-item>
+            <el-menu-item index="/order">订单管理</el-menu-item>
             <el-menu-item index="/content">内容管理</el-menu-item>
             <!--            <el-menu-item index="2">-->
             <!--                <span>一级菜单</span>-->

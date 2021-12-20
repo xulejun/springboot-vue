@@ -24,15 +24,23 @@
                             :preview-src-list="[scope.row.path]"/>
                 </template>
             </el-table-column>
-            <el-table-column fixed="right" label="操作" v-if="user.role === '1'">
+            <el-table-column fixed="right" label="操作">
                 <template #default="scope">
-                    <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-                    <!--                    气泡确认框 -->
-                    <el-popconfirm title="确认删除吗？" @confirm="handleDelete(scope.row.id)">
-                        <template #reference>
-                            <el-button size="mini" type="danger">删除</el-button>
-                        </template>
-                    </el-popconfirm>
+                    <div style="display: flex">
+                        <el-button size="mini" @click="purchase(scope.row)" type="primary" style="margin-right: 10px"
+                                   :disabled="isPurchase(scope.row)">
+                            购买
+                        </el-button>
+                        <div v-if="user.role === '1'">
+                            <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+                            <!--                    气泡确认框 -->
+                            <el-popconfirm title="确认删除吗？" @confirm="handleDelete(scope.row.id)">
+                                <template #reference>
+                                    <el-button size="mini" type="danger">删除</el-button>
+                                </template>
+                            </el-popconfirm>
+                        </div>
+                    </div>
                 </template>
             </el-table-column>
         </el-table>
@@ -65,8 +73,7 @@
                     </el-form-item>
                     <el-form-item label="上传图片">
                         <!--                        上传图片调用后端接口，需要解决后端跨域问题，成功后将图片路径保存到数据库中-->
-                        <el-upload ref="upload" action="uploadUrl"
-                                   :on-success="fileUpload">
+                        <el-upload ref="upload" action="uploadUrl" :on-success="fileUpload">
                             <el-button size="small" type="primary">点击上传</el-button>
                         </el-upload>
                     </el-form-item>
@@ -110,6 +117,24 @@
         },
 
         methods: {
+            // 是否可购买，库存<=0，则不可购买
+            isPurchase(row) {
+                return row.stock <= 0;
+            },
+            purchase(row) {
+                request.post("/product/purchase/" + row.id + "?username=" + this.user.username).then(res => {
+                    // 响应提示
+                    if (res.code === '0') {
+                        // 请求成功则打开付款连接
+                        window.open(res.data, "_blank");
+                    } else {
+                        this.$message({
+                            type: "error",
+                            message: res.msg
+                        })
+                    }
+                })
+            },
             fileUpload(res) {
                 this.form.path = res.data
             },

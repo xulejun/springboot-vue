@@ -1,13 +1,16 @@
 package com.legendxu.manager.controller;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.legendxu.manager.common.Result;
+import com.legendxu.manager.entity.OrderInfo;
 import com.legendxu.manager.entity.Product;
+import com.legendxu.manager.service.OrderInfoService;
 import com.legendxu.manager.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +42,31 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    OrderInfoService orderService;
+
     private static String ip = "http://localhost:";
+
+    @PostMapping("/purchase/{id}")
+    public Result<?> purchase(@PathVariable Integer id, @RequestParam String username) {
+        Product product = productService.getById(id);
+        if (ObjectUtil.isEmpty(product)) {
+            return Result.error(String.valueOf(HttpStatus.BAD_REQUEST.value()), "未找到该商品");
+        }
+        if (Integer.parseInt(product.getStock()) <= 0) {
+            return Result.error(String.valueOf(HttpStatus.BAD_REQUEST.value()), "该商品已售罄");
+        }
+        String skuTranceNo = IdUtil.getSnowflake(0L, 0L).nextIdStr();
+        String requestParams = String.format("subject=%s&traceNo=%s&totalAmount=%s", product.getName(), skuTranceNo, product.getPrice());
+        // 订单信息保存到数据库
+        OrderInfo orderInfo = new OrderInfo();
+        orderInfo.setSubject(product.getName());
+        orderInfo.setSkuTradeNo(skuTranceNo);
+        orderInfo.setPayAmount(product.getPrice().toString());
+        orderInfo.setPayer(username);
+        orderService.save(orderInfo);
+        return Result.success(ip + port + "/alipay/pay?" + requestParams);
+    }
 
     @PostMapping("/uploadFile")
     public Result<?> uploadFile(@RequestBody MultipartFile file) {
