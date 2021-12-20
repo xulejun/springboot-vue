@@ -1,3 +1,4 @@
+-- vue_user: table
 DROP TABLE IF EXISTS vue_user;
 CREATE TABLE `vue_user`
 (
@@ -40,6 +41,23 @@ CREATE TABLE `content`
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 0
   DEFAULT CHARSET = utf8 COMMENT ='内容管理（富文本编辑器集成）';
+-- order_info: table
+DROP TABLE IF EXISTS order_info;
+CREATE TABLE `order_info`
+(
+    `id`           int(11) NOT NULL AUTO_INCREMENT,
+    `subject`      varchar(100) DEFAULT NULL COMMENT '交易名称',
+    `trade_no`     varchar(100) DEFAULT NULL COMMENT '支付宝交易凭证号',
+    `buyer_id`     varchar(100) DEFAULT NULL COMMENT '买家在支付宝唯一id',
+    `sku_trade_no` varchar(100) DEFAULT NULL COMMENT '商品订单号',
+    `status`       tinyint(2)   DEFAULT '0' COMMENT '交易状态：0-未支付，1-已支付',
+    `payer`        varchar(10)  DEFAULT NULL COMMENT '支付人',
+    `pay_amount`   varchar(10)  DEFAULT NULL COMMENT '买家付款金额',
+    `pay_time`     varchar(50)  DEFAULT NULL COMMENT '买家付款时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 0
+  DEFAULT CHARSET = utf8 COMMENT ='订单详情表';
 -- 插入数据
 INSERT INTO personal.vue_user (username, password, nick_name, age, sex, address, role) VALUES ('盖伦', '123456', '德玛西亚之力', 18, '男', '德玛西亚', 2);
 INSERT INTO personal.vue_user (username, password, nick_name, age, sex, address, role) VALUES ('刀妹', '123456', '刀锋舞者', 19, '女', '艾欧尼亚', 2);
@@ -71,3 +89,11 @@ INSERT INTO personal.content (title, author, details, create_time) VALUES ('金�
 INSERT INTO personal.content (title, author, details, create_time) VALUES ('刀妹台词', '刀妹', '<p>1、走这边</p><p>2、正义指引着我们。</p><p>3、我绝不会动摇。</p><p>4、出手要准</p><p>5、稳步前进!</p><p>6、艾欧尼亚不会灭亡。</p><p>7、我的立场非常坚定。</p><p>8、要保持敏锐。</p><p>9、真正的意志是不会被击败的!</p><p>10、为什么每个人都在问我“会不会削到自己的头发”呢?</p><p>11、没有退路了!</p><p>12、我的剑刃从不颤抖。</p><p>13、这场战斗必将获胜。</p><p>14、他们的胜利必将成为奢望!</p><p>15、这就是我收养那些流浪剑刃的结果。</p><p>16、你们太过依赖自己的武器了，要试着放手~</p><p>17、平衡，存乎万物之间。</p><p>18、我的剑刃不但准，而且狠!</p><p>19、我的剑刃愿为您效劳。</p><p>20、可怕的喘息，就像被她自己的剑刺入一样痛苦。</p><p><img src="https://gimg0.baidu.com/gimg/src=https%3A%2F%2Fgameplus-platform.cdn.bcebos.com%2Fgameplus-platform%2Fupload%2Ffile%2Fsource%2F2_1626667527186.jpg&amp;app=2000&amp;size=f9999,10000&amp;n=0&amp;g=0n&amp;q=70&amp;fmt=jpeg?sec=0&amp;t=7602c577da3dbd74830956c148fe1a36" style="max-width:100%;" contenteditable="false"/></p><br/>', '2021-12-15 19:32:05');
 INSERT INTO personal.content (title, author, details, create_time) VALUES ('亚索台词', '亚索', '<p>1、死亡如风，常伴吾身。</p><p>2、长路漫漫，唯剑作伴。</p><p>3、吾之荣耀，离别已久。</p><p>4、明日安在，无人能允。</p><p>5、且随疾风前行，身后亦须留心。</p><p>6、此剑之势，愈斩愈烈。</p><p>7、仁义道德，也是一种奢侈。</p><p>8、灭亡之路，短的超乎你的想象。</p><p>9、无罪之人，方可安睡。</p><p>10、正义，好个冠冕堂皇之词。</p><p>11、回首往昔，更进一步。</p><p>12、吾虽浪迹天涯，却未迷失本心。</p><p>13、我还在寻找回家的路。</p><p>14、可久留于一处。</p><p>15、我将遵循此道，直至终结。</p><p>16、荣耀存于心，而非流于形。</p><p>17、吾之初心，永世不忘。</p><p>18、这个故事还没有完结。</p><p>19、树叶的一生，只是为了归根吧?</p><p>20、汝欲赴死，易如反掌。</p><p>21、人们一直在往我的剑上撞。</p><p>22、我会给你个痛快的!</p><p>23、蠢货是无药可治的!</p><p>24、想杀我?你可以试试。</p><p>25、死亡而已!没什么大不了的。</p><p>26、速战速决吧!</p><p>27、还是别出招了，反正是我赢。</p><p>28、想独自平静一会吗?很快你就可以了。</p><p>29、有些事绝对不会无趣。</p><p>30、有些失误无法犯两次。</p><p>31、我不会怀着耻辱而死!</p><p>32、别再逃了。</p><p>33、我命由我，不由天。</p><p>34、一剑，一念。</p><p>35、还没到死的时候。</p><p>36、亚索把他的酒瓶扔向空中并用他的剑接住。</p><p>37、我的剑，比什么都重要，除了美酒。</p><p>38、谁说我酒量不好的?</p><p>39、生命中有三件必经之事：荣誉、死亡、还有宿醉。</p><p>40、不是你死，就是我亡!</p><p>41、如果你要来杀我，希望你把朋友们也带上。</p><p>42、杀人是种恶习，但我似乎戒不掉了。</p><p><br/><img src="https://gimg0.baidu.com/gimg/src=https%3A%2F%2Fgameplus-platform.cdn.bcebos.com%2Fgameplus-platform%2Fupload%2Ffile%2Fsource%2FQQ%E5%9B%BE%E7%89%8720210903163533_1630658203553.png&amp;app=2000&amp;size=f9999,10000&amp;n=0&amp;g=0n&amp;q=70&amp;fmt=jpeg?sec=0&amp;t=5d11d322ffa135cb7fe3058c969e1fae" contenteditable="false" style="font-size: 14px; color: var(--el-text-color-regular); max-width: 100%;"/></p>', '2021-12-15 19:33:30');
 INSERT INTO personal.content (title, author, details, create_time) VALUES ('小炮台词', '小炮', '<p>一日为班德尔炮手，终身为班德尔炮手</p><p>跳舞(带唱歌)：</p><p>班德尔炮手看到了什么?报告长官只有胜利</p><p>不管陆军、空军还是海军，班德尔炮手统统消灭干净</p><p>一个树桩短，十个树桩长，班德尔炮手不可阻挡</p><p>游戏中随机台词：</p><p>不顾一切的冲锋!</p><p>快让这场派对开始吧</p><p>你卖耳塞不?</p><p>只需要给我指个正确的方向</p><p>带上这些坏家伙</p><p>哈哈哈<br/><img src="https://img2.baidu.com/it/u=3770740608,1493581647&amp;fm=26&amp;fmt=auto" style="max-width:100%;" contenteditable="false"/></p>', '2021-12-15 19:53:39');
+
+INSERT INTO personal.order_info (subject, trade_no, buyer_id, sku_trade_no, status, payer, pay_amount, pay_time) VALUES ('小米8屏幕指纹版', '2021122022001430870501672392', '2088622957430877', '1472839834904035328', 1, 'admin', '2699.00', '2021-12-20 16:02:51');
+INSERT INTO personal.order_info (subject, trade_no, buyer_id, sku_trade_no, status, payer, pay_amount, pay_time) VALUES ('膳魔师保温杯', '2021122022001430870501672696', '2088622957430877', '1472840313713197056', 1, 'admin', '169.00', '2021-12-20 16:04:56');
+INSERT INTO personal.order_info (subject, trade_no, buyer_id, sku_trade_no, status, payer, pay_amount, pay_time) VALUES ( '马克杯', '2021122022001430870501672393', '2088622957430877', '1472840598200254464', 1, 'admin', '12.00', '2021-12-20 16:05:52');
+INSERT INTO personal.order_info (subject, trade_no, buyer_id, sku_trade_no, status, payer, pay_amount, pay_time) VALUES ( 'Lenovo无线鼠标', '2021122022001430870501672394', '2088622957430877', '1472840760943443968', 1, 'admin', '88.00', '2021-12-20 16:06:31');
+INSERT INTO personal.order_info (subject, trade_no, buyer_id, sku_trade_no, status, payer, pay_amount, pay_time) VALUES ( 'ThinkPad笔记本', '2021122022001430870501672395', '2088622957430877', '1472840854392537088', 1, 'admin', '6999.00', '2021-12-20 16:06:51');
+INSERT INTO personal.order_info (subject, trade_no, buyer_id, sku_trade_no, status, payer, pay_amount, pay_time) VALUES ( 'ThinkVison显示器', '2021122022001430870501672396', '2088622957430877', '1472841174514401280', 1, 'admin', '799.00', '2021-12-20 16:08:22');
+INSERT INTO personal.order_info (subject, trade_no, buyer_id, sku_trade_no, status, payer, pay_amount, pay_time) VALUES ( '李宁跑鞋', null, null, '1472841372686876672', 0, 'admin', '399', null);
