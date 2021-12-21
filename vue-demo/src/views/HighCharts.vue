@@ -1,8 +1,8 @@
 <template>
     <div style="padding: 10px;width: 90%">
-        <div style="height: 10%;margin: 10px">
-            <el-button type="primary" @click="moreChart">点击显示一年内的价格</el-button>
-        </div>
+<!--        <div style="height: 10%;margin: 10px">-->
+<!--            <el-button type="primary" @click="moreChart" id="showData">点击显示一年内的价格</el-button>-->
+<!--        </div>-->
         <div id="container"></div>
     </div>
 </template>
@@ -25,38 +25,37 @@
         created() {
             request.get("/garlic/getYearPrice").then(res => {
                 this.prices = res.data.map(garlic => garlic.price).reverse();
+                this.datetime = res.data.map(garlic => garlic.articleTime.substr(0,11)).reverse();
             });
+            setTimeout(this.moreChart,100);
         },
         methods: {
             moreChart() {
-                request.get("/garlic/getYearPrice").then(res => {
-                    this.prices = res.data.map(garlic => garlic.price).reverse();
-                    // this.datetime = res.data.map(garlic => garlic.articleTime).reverse();
-                });
                 this.chart = new Highcharts.Chart("container", {
+                    // 标题
                     title: {
                         text: "garlic一年内价格趋势图"
                     },
                     subtitle: {
                         text: "数据来源：garlic"
                     },
+                    xAxis: {
+                        categories: this.datetime,
+                        title: {
+                            text: "日期"
+                        },
+                    },
+                    // y轴
                     yAxis: {
                         title: {
                             text: "价格"
                         }
                     },
+                    // 图例
                     legend: {
                         layout: "vertical",
                         align: "right",
                         verticalAlign: "middle"
-                    },
-                    plotOptions: {
-                        series: {
-                            label: {
-                                connectorAllowed: false
-                            },
-                            pointStart: 1
-                        }
                     },
                     series: [
                         {
