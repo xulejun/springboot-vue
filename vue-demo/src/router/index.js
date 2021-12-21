@@ -32,7 +32,12 @@ const routes = [
                 path: '/order',
                 name: 'Order',
                 component: () => import("@/views/Order")
-            }
+            },
+            {
+                path: '/highCharts',
+                name: 'HighCharts',
+                component: () => import("@/views/HighCharts")
+            },
         ]
     },
     {
