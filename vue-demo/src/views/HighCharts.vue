@@ -1,15 +1,18 @@
 <template>
     <div style="padding: 10px;width: 90%">
-<!--        <div style="height: 10%;margin: 10px">-->
-<!--            <el-button type="primary" @click="moreChart" id="showData">点击显示一年内的价格</el-button>-->
-<!--        </div>-->
+        <!--        <div style="height: 10%;margin: 10px">-->
+        <!--            <el-button type="primary" @click="moreChart" id="showData">点击显示一年内的价格</el-button>-->
+        <!--        </div>-->
         <div id="container"></div>
+        <p id="msg" style="margin: 10px"/>
     </div>
 </template>
 
 <script>
     import Highcharts from "highcharts/highstock";
     import request from "@/utils/request";
+
+    let articleLink = [];
 
     export default {
         name: "HighCharts",
@@ -25,9 +28,10 @@
         created() {
             request.get("/garlic/getYearPrice").then(res => {
                 this.prices = res.data.map(garlic => garlic.price).reverse();
-                this.datetime = res.data.map(garlic => garlic.articleTime.substr(0,11)).reverse();
+                this.datetime = res.data.map(garlic => garlic.articleTime.substr(0, 11)).reverse();
+                articleLink = res.data.map(garlic => garlic.detailUrl).reverse();
             });
-            setTimeout(this.moreChart,100);
+            setTimeout(this.moreChart, 100);
         },
         methods: {
             moreChart() {
@@ -44,6 +48,7 @@
                         title: {
                             text: "日期"
                         },
+                        visible: false,
                     },
                     // y轴
                     yAxis: {
@@ -78,6 +83,27 @@
                                 }
                             }
                         ]
+                    },
+                    plotOptions: {
+                        series: {
+                            cursor: 'pointer',
+                            point: {
+                                events: {
+                                    // 数据点点击事件
+                                    // 其中 e 变量为事件对象，this 为当前数据点对象
+                                    click() {
+                                        // console.log("hello" + this.datetime);
+                                        console.log(articleLink[this.x]);
+                                        document.getElementById("msg").innerHTML =
+                                            '时间：' + this.category + '<br/> 价格：' + this.y + '<br/> 原文链接：' +
+                                            '<a target="_blank" href="' + articleLink[this.x] + '">' + articleLink[this.x] + '</a>';
+                                    }
+                                }
+                            },
+                            marker: {
+                                lineWidth: 1
+                            }
+                        }
                     }
                 });
             }
