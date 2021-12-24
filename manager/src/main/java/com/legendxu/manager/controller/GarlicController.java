@@ -38,6 +38,12 @@ public class GarlicController {
         return Result.success();
     }
 
+    @PutMapping("/updateGarlicByDate")
+    public Result<?> updateGarlicByDate(@RequestBody Garlic garlic) {
+        garlicService.update(garlic, Wrappers.<Garlic>lambdaUpdate().like(Garlic::getArticleTime, garlic.getArticleTime()));
+        return Result.success();
+    }
+
     @DeleteMapping("/deleteGarlic/{id}")
     public Result<?> updateGarlic(@PathVariable("id") Integer id) {
         garlicService.removeById(id);
@@ -60,8 +66,8 @@ public class GarlicController {
      */
     @GetMapping("/pageFindGarlic")
     public Result<?> pageFindGarlic(@RequestParam(defaultValue = "1") Integer pageNum,
-                                     @RequestParam(defaultValue = "10") Integer pageSize,
-                                     @RequestParam(defaultValue = "") String search) {
+                                    @RequestParam(defaultValue = "10") Integer pageSize,
+                                    @RequestParam(defaultValue = "") String search) {
         Page<Garlic> page = garlicService.page(new Page<>(pageNum, pageSize), Wrappers.<Garlic>lambdaQuery().like(Garlic::getPrice, search));
         return Result.success(page);
     }

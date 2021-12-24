@@ -1,4 +1,5 @@
 <template>
+    <!--    主界面-->
     <div style="padding: 10px;width: 90%">
         <div style="height: 10%;margin: 10px">
             <el-button type="primary" @click="getYear">点击显示一年内的价格</el-button>
@@ -24,11 +25,35 @@
             </el-table-column>
         </el-table>
     </div>
+    <!--    功能菜单-->
+    <!--            弹框-->
+    <el-dialog v-model="dialogVisible" title="编辑数据" width="70%" :before-close="handleClose">
+        <!--                新增表单-->
+        <el-form :model="form" label-width="120px" style="width: 90%">
+            <el-form-item label="日期">
+                <el-input v-model="form.date"/>
+            </el-form-item>
+            <el-form-item label="价格">
+                <el-input v-model="form.price"/>
+            </el-form-item>
+            <el-form-item label="原文链接">
+                <el-input v-model="form.articleLink"/>
+            </el-form-item>
+        </el-form>
+        <!--                确认框-->
+        <template #footer>
+                  <span class="dialog-footer">
+                    <el-button @click="dialogVisible = false">取消</el-button>
+                    <el-button type="primary" @click="save">确定</el-button>
+                  </span>
+        </template>
+    </el-dialog>
 </template>
 
 <script>
     import request from "@/utils/request";
     import {Chart} from "highcharts-vue";
+    import E from "wangeditor";
 
     let globalArticleLinks = [];
     let globalTableData = [];
@@ -47,6 +72,8 @@
         },
         data() {
             return {
+                form: {},
+                dialogVisible: false,
                 datetime: [],
                 prices: [],
                 articleLinks: [],
@@ -59,6 +86,34 @@
             }
         },
         methods: {
+            save() {
+                // post请求体请求
+                request.post("/garlic/updateGarlicByDate", this.form).then(res => {
+                    // 响应提示
+                    console.log(this.form);
+                    if (res.code === '0') {
+                        this.$message({
+                            type: "success",
+                            message: "更新成功"
+                        })
+                    } else {
+                        this.$message({
+                            type: "error",
+                            message: res.msg
+                        })
+                    }
+                });
+                // 保存后结束对话框
+                this.dialogVisible = false;
+                // 查询数据
+                location.reload();
+                this.load();
+            },
+            handleEdit(row) {
+                // 打开弹窗按钮，将当前行的数据填充到表单中
+                this.form = JSON.parse(JSON.stringify(row));
+                this.dialogVisible = true;
+            },
             getPoint() {
                 this.tableData = globalTableData;
             },
