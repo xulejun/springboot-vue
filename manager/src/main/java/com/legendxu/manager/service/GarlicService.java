@@ -15,5 +15,12 @@ public interface GarlicService extends IService<Garlic> {
      *
      * @return
      */
-    List<Garlic> getYearPrice();
+    List<Garlic> getOneYearData();
+
+    /**
+     * 获取近三年内的价格
+     *
+     * @return
+     */
+    List<Garlic> getThreeYearData();
 }

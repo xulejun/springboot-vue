@@ -72,9 +72,15 @@ public class GarlicController {
         return Result.success(page);
     }
 
-    @GetMapping("/getYearPrice")
-    public Result<?> getYearPrice() {
-        List<Garlic> yearPrice = garlicService.getYearPrice();
+    @GetMapping("/getOneYearData")
+    public Result<?> getOneYearData() {
+        List<Garlic> yearPrice = garlicService.getOneYearData();
+        return Result.success(yearPrice);
+    }
+
+    @GetMapping("/getThreeYearData")
+    public Result<?> getThreeYearData() {
+        List<Garlic> yearPrice = garlicService.getThreeYearData();
         return Result.success(yearPrice);
     }
 

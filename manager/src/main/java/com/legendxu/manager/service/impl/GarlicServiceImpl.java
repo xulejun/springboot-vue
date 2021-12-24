@@ -19,8 +19,12 @@ public class GarlicServiceImpl extends ServiceImpl<GarlicMapper, Garlic> impleme
     GarlicMapper garlicMapper;
 
     @Override
-    public List<Garlic> getYearPrice() {
-        return garlicMapper.getYearPrice();
+    public List<Garlic> getOneYearData() {
+        return garlicMapper.getOneYearData();
+    }
+    @Override
+    public List<Garlic> getThreeYearData() {
+        return garlicMapper.getThreeYearData();
     }
 }
 

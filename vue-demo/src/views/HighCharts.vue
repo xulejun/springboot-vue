@@ -1,8 +1,9 @@
 <template>
     <!--    主界面-->
     <div style="padding: 10px;width: 90%">
-        <div style="height: 10%;margin: 10px">
-            <el-button type="primary" @click="getYear">点击显示一年内的价格</el-button>
+        <div style="display: flex;margin: 10px">
+            <el-button type="primary" @click="getOneYear">点击显示一年内的价格</el-button>
+            <el-button type="primary" @click="getThreeYear">点击显示三年内的价格</el-button>
         </div>
         <div id="chart">
             <highcharts :options="chartOptions" :callback="chart"/>
@@ -53,22 +54,14 @@
 <script>
     import request from "@/utils/request";
     import {Chart} from "highcharts-vue";
-    import E from "wangeditor";
 
     let globalArticleLinks = [];
     let globalTableData = [];
+    let title = '';
     export default {
         name: "HighCharts",
         components: {
             highcharts: Chart
-        },
-        // 页面加载时就调用该方法
-        created() {
-            request.get("/garlic/getYearPrice").then(res => {
-                this.prices = res.data.map(garlic => garlic.price).reverse();
-                this.datetime = res.data.map(garlic => garlic.articleTime.substr(0, 11)).reverse();
-                globalArticleLinks = this.articleLinks = res.data.map(garlic => garlic.detailUrl).reverse();
-            });
         },
         data() {
             return {
@@ -86,6 +79,15 @@
             }
         },
         methods: {
+            getThreeYear() {
+                request.get("/garlic/getThreeYearData").then(res => {
+                    this.prices = res.data.map(garlic => garlic.price).reverse();
+                    this.datetime = res.data.map(garlic => garlic.articleTime.substr(0, 11)).reverse();
+                    globalArticleLinks = this.articleLinks = res.data.map(garlic => garlic.detailUrl).reverse();
+                });
+                title = "garlic三年内价格趋势图";
+                setTimeout(this.drawChart,100);
+            },
             save() {
                 // post请求体请求
                 request.put("/garlic/updateGarlicByDate", this.form).then(res => {
@@ -116,11 +118,20 @@
             getPoint() {
                 this.tableData = globalTableData;
             },
-            getYear() {
+            getOneYear() {
+                request.get("/garlic/getOneYearData").then(res => {
+                    this.prices = res.data.map(garlic => garlic.price).reverse();
+                    this.datetime = res.data.map(garlic => garlic.articleTime.substr(0, 11)).reverse();
+                    globalArticleLinks = this.articleLinks = res.data.map(garlic => garlic.detailUrl).reverse();
+                });
+                title = "garlic一年内价格趋势图";
+                setTimeout(this.drawChart,100);
+            },
+            drawChart(){
                 this.chartOptions = {
                     // 标题
                     title: {
-                        text: "garlic一年内价格趋势图"
+                        text: title
                     },
                     subtitle: {
                         text: "数据来源：garlic"
@@ -189,7 +200,7 @@
                         }
                     }
                 }
-            },
+            }
         },
         // vue在获取相应元素之前，必须在mount钩子进行挂载，否则获取到的值为空
         mounted() {
