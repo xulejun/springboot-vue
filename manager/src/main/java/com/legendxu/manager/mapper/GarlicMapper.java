@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface GarlicMapper extends BaseMapper<Garlic> {
 
-    @Select("select id,title,detailUrl,article_time,price,crawler_time from garlic group by article_time desc limit 365")
+    @Select("select id,title,detail_url,article_time,price,crawler_time from garlic group by article_time desc limit 365")
     List<Garlic> getYearPrice();
 }
 

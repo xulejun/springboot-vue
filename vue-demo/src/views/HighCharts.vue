@@ -9,11 +9,11 @@
         </div>
         <el-button @click="getPoint" id="showPointData" style="display: none"/>
         <el-table :data="tableData" style="width:100%">
-            <el-table-column prop="date" label="日期" width="300"/>
+            <el-table-column prop="articleTime" label="日期" width="300"/>
             <el-table-column prop="price" label="价格" width="300"/>
             <el-table-column label="原文链接" width="500">
                 <template #default="scope">
-                    <a :href="scope.row.articleLink" target="_blank">{{scope.row.articleLink}}</a>
+                    <a :href="scope.row.detailUrl" target="_blank">{{scope.row.detailUrl}}</a>
                 </template>
             </el-table-column>
             <el-table-column fixed="right" label="操作">
@@ -31,13 +31,13 @@
         <!--                新增表单-->
         <el-form :model="form" label-width="120px" style="width: 90%">
             <el-form-item label="日期">
-                <el-input v-model="form.date"/>
+                <el-input v-model="form.articleTime"/>
             </el-form-item>
             <el-form-item label="价格">
                 <el-input v-model="form.price"/>
             </el-form-item>
             <el-form-item label="原文链接">
-                <el-input v-model="form.articleLink"/>
+                <el-input v-model="form.detailUrl"/>
             </el-form-item>
         </el-form>
         <!--                确认框-->
@@ -88,7 +88,7 @@
         methods: {
             save() {
                 // post请求体请求
-                request.post("/garlic/updateGarlicByDate", this.form).then(res => {
+                request.put("/garlic/updateGarlicByDate", this.form).then(res => {
                     // 响应提示
                     console.log(this.form);
                     if (res.code === '0') {
@@ -107,7 +107,6 @@
                 this.dialogVisible = false;
                 // 查询数据
                 location.reload();
-                this.load();
             },
             handleEdit(row) {
                 // 打开弹窗按钮，将当前行的数据填充到表单中
@@ -175,9 +174,9 @@
                                     // 点击图表事件
                                     click() {
                                         globalTableData = [{
-                                            date: this.category,
+                                            articleTime: this.category,
                                             price: this.y,
-                                            articleLink: globalArticleLinks[this.x],
+                                            detailUrl: globalArticleLinks[this.x],
                                         }];
                                         // 操作dom点击触发事件
                                         document.getElementById('showPointData').click();
