@@ -64,7 +64,7 @@ CREATE TABLE `garlic`
 (
     `id`           int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
     `title`        varchar(100)  DEFAULT NULL COMMENT '标题',
-    `detailUrl`    varchar(255)  DEFAULT NULL COMMENT '详情Url',
+    `detail_url`    varchar(255)  DEFAULT NULL COMMENT '详情Url',
     `article_time` varchar(100)  DEFAULT NULL COMMENT '文章发布时间',
     `price`        decimal(6, 2) DEFAULT NULL COMMENT '价格',
     `crawler_time` datetime      DEFAULT NULL COMMENT '文章采集时间',
