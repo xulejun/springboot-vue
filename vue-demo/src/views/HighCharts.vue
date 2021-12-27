@@ -134,7 +134,7 @@
                         text: title
                     },
                     subtitle: {
-                        text: "数据来源：garlic"
+                        text: "数据来源：http://www.51garlic.com/"
                     },
                     xAxis: {
                         categories: this.datetime,
