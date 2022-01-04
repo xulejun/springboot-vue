@@ -23,4 +23,12 @@ public interface GarlicService extends IService<Garlic> {
      * @return
      */
     List<Garlic> getThreeYearData();
+
+    /**
+     * 更新插入
+     *
+     * @param garlic
+     * @return
+     */
+    int replace(Garlic garlic);
 }

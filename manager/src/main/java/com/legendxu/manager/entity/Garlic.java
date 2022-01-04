@@ -9,7 +9,10 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 大蒜行情价格
@@ -17,8 +20,11 @@ import lombok.Data;
  * @author lejunxu
  * @TableName garlic
  */
-@TableName(value = "garlic")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@TableName(value = "garlic")
 public class Garlic implements Serializable {
     /**
      * 主键
