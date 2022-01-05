@@ -57,3 +57,7 @@
 - 节流：在规定间隔时间内不会重复触发回调，大于的时间间隔才会触发回调（频繁触发变为少量触发）
   - 案例：即使快速点击按钮，而只会大于时间间隔才触发一次，而不是点击一次就触发一次
 - 使用 lodash 工具库可实现，底层运用 闭包+延时
+## ——Linux
+- 项目部署到服务器，后端启动命令：`nohup java -jar manager-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod &`
+- 查找进程号：`ps -ef|grep manager`
+- 杀死进程：`kill （root 后的进程号）`

@@ -38,10 +38,11 @@ public class ContentController {
     @Value("${server.port}")
     private String port;
 
+    @Value("${file.ip}")
+    private String ip;
+
     @Autowired
     ContentService contentService;
-
-    private static String ip = "http://localhost:";
 
     @PostMapping("/uploadImg")
     public JSONObject uploadFile(@RequestBody MultipartFile file) {
