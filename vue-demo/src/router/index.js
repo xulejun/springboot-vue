@@ -56,6 +56,14 @@ const routes = [
                     title:'可视化数据'
                 }
             },
+            {
+                path: '/christmasTree',
+                name: 'ChristmasTree',
+                component: () => import("@/views/ChristmasTree"),
+                meta:{
+                    title:'圣诞树'
+                }
+            },
         ]
     },
     {

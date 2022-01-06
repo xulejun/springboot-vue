@@ -14,6 +14,7 @@
             <el-menu-item index="/order">订单管理</el-menu-item>
             <el-menu-item index="/content">内容管理</el-menu-item>
             <el-menu-item index="/highCharts">可视化数据</el-menu-item>
+            <el-menu-item index="/christmasTree">圣诞树</el-menu-item>
             <!--            <el-menu-item index="2">-->
             <!--                <span>一级菜单</span>-->
             <!--            </el-menu-item>-->
