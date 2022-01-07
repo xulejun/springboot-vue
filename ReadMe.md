@@ -61,3 +61,5 @@
 - 项目部署到服务器，后端启动命令：`nohup java -jar manager-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod &`
 - 查找进程号：`ps -ef|grep manager`
 - 杀死进程：`kill （root 后的进程号）`
+- 商品管理图片展示显示加载失败问题：
+  - 由于图片是放置在/resources/file文件夹下，部署到linux为jar包，故找不到改目录
