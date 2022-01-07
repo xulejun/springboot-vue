@@ -38,14 +38,14 @@ import java.util.List;
 public class ProductController {
     @Value("${server.port}")
     private String port;
+    @Value("${file.ip}")
+    private String ip;
 
     @Autowired
     ProductService productService;
 
     @Autowired
     OrderInfoService orderService;
-
-    private static String ip = "http://localhost:";
 
     @PostMapping("/purchase/{id}")
     public Result<?> purchase(@PathVariable Integer id, @RequestParam String username) {

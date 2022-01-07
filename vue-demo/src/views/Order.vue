@@ -76,7 +76,6 @@
                     }
                 }).then(res => {
                     this.tableData = res.data.records;
-                    console.log("表格数据：" + res.data.records);
                     this.total = res.data.total;
                 })
             },
