@@ -8,6 +8,7 @@ import com.legendxu.manager.common.Result;
 import com.legendxu.manager.entity.User;
 import com.legendxu.manager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -24,9 +25,15 @@ public class UserController {
 
     @PostMapping("/login")
     public Result<?> login(@RequestBody User user) {
-        User selectUser = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, user.getUsername()).eq(User::getPassword, user.getPassword()));
+        User selectUser = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, user.getUsername()));
         if (ObjectUtil.isEmpty(selectUser)) {
-            return Result.error("-1", "用户名或者密码错误");
+            return Result.error("-1", "用户名不存在");
+        }
+        // 用 security 框架自带的API做密码匹配校验
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        boolean matches = passwordEncoder.matches(user.getPassword(), selectUser.getPassword());
+        if (!matches) {
+            return Result.error("-2", "密码错误");
         }
         return Result.success(selectUser);
     }
@@ -35,28 +42,38 @@ public class UserController {
     public Result<?> register(@RequestBody User user) {
         User selectUser = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, user.getUsername()));
         if (ObjectUtil.isNotEmpty(selectUser)) {
-            return Result.error("-1", "用户名重复");
+            return Result.error("-3", "用户名重复");
         }
-        if (StrUtil.isBlank(user.getPassword())) {
-            user.setPassword("123456");
-        }
+        // 默认密码为123456，数据库中保存的是md5+盐进行加密过后的密码，密码加密
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String password = StrUtil.isBlank(user.getPassword()) ? "123456" : user.getPassword();
+        user.setPassword(passwordEncoder.encode(password));
+        user.setRole("2");
         userService.save(user);
         return Result.success();
     }
 
     @PostMapping("/saveUser")
     public Result<?> saveUser(@RequestBody User user) {
-        if (StrUtil.isBlank(user.getPassword())) {
-            user.setPassword("123456");
+        User selectUser = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, user.getUsername()));
+        if (ObjectUtil.isNotEmpty(selectUser)) {
+            return Result.error("-3", "用户名重复");
         }
+        // 默认密码为123456，数据库中保存的是md5+盐进行加密过后的密码，密码加密
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String password = StrUtil.isBlank(user.getPassword()) ? "123456" : user.getPassword();
+        user.setPassword(passwordEncoder.encode(password));
+        user.setRole("2");
         userService.save(user);
         return Result.success();
     }
 
     @PutMapping("/updateUser")
     public Result<?> updateUser(@RequestBody User user) {
+        // 默认密码为123456，数据库中保存的是md5+盐进行加密过后的密码，密码加密
         if (StrUtil.isBlank(user.getPassword())) {
-            user.setPassword("123456");
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            user.setPassword(passwordEncoder.encode("123456"));
         }
         userService.updateById(user);
         return Result.success();
