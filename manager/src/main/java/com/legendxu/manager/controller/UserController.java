@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * 该Controller使用Restful接口规范，可不填子路径名，通过请求类型找到对应接口
  *
@@ -24,7 +26,7 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/login")
-    public Result<?> login(@RequestBody User user) {
+    public Result<?> login(@RequestBody User user, HttpSession httpSession) {
         User selectUser = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, user.getUsername()));
         if (ObjectUtil.isEmpty(selectUser)) {
             return Result.error("-1", "用户名不存在");
@@ -35,6 +37,7 @@ public class UserController {
         if (!matches) {
             return Result.error("-2", "密码错误");
         }
+        httpSession.setAttribute("loginUser", user);
         return Result.success(selectUser);
     }
 
