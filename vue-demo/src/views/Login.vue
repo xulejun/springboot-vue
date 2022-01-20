@@ -51,6 +51,15 @@ export default {
       validCode: '',
     }
   },
+  created() {
+    request.get("/login/preLogin").then(res => {
+      console.log(res.data);
+      if (res.data) {
+        sessionStorage.setItem("user", JSON.stringify(res.data));
+        this.$router.push("/highCharts");
+      }
+    })
+  },
   methods: {
     // 接收验证码组件提交的 4位验证码
     createValidCode(data) {
@@ -70,7 +79,7 @@ export default {
             return;
           }
           // 提交请求
-          request.post("/user/login", this.form).then(res => {
+          request.post("/login/doLogin", this.form).then(res => {
             // 响应提示
             if (res.code === '0') {
               this.$message({

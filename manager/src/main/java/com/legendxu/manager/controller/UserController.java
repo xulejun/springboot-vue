@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -24,37 +27,6 @@ import javax.servlet.http.HttpSession;
 public class UserController {
     @Autowired
     UserService userService;
-
-    @PostMapping("/login")
-    public Result<?> login(@RequestBody User user, HttpSession httpSession) {
-        User selectUser = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, user.getUsername()));
-        if (ObjectUtil.isEmpty(selectUser)) {
-            return Result.error("-1", "用户名不存在");
-        }
-        // 用 security 框架自带的API做密码匹配校验
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        boolean matches = passwordEncoder.matches(user.getPassword(), selectUser.getPassword());
-        if (!matches) {
-            return Result.error("-2", "密码错误");
-        }
-        httpSession.setAttribute("loginUser", user);
-        return Result.success(selectUser);
-    }
-
-    @PostMapping("/register")
-    public Result<?> register(@RequestBody User user) {
-        User selectUser = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, user.getUsername()));
-        if (ObjectUtil.isNotEmpty(selectUser)) {
-            return Result.error("-3", "用户名重复");
-        }
-        // 默认密码为123456，数据库中保存的是md5+盐进行加密过后的密码，密码加密
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String password = StrUtil.isBlank(user.getPassword()) ? "123456" : user.getPassword();
-        user.setPassword(passwordEncoder.encode(password));
-        user.setRole("2");
-        userService.save(user);
-        return Result.success();
-    }
 
     @PostMapping("/saveUser")
     public Result<?> saveUser(@RequestBody User user) {

@@ -23,7 +23,7 @@ public class SessionConfig {
     public CookieSerializer cookieSerializer() {
         DefaultCookieSerializer cookieSerializer = new DefaultCookieSerializer();
 //        cookieSerializer.setDomainName(".legend.com");
-        cookieSerializer.setCookieName("token");
+//        cookieSerializer.setCookieName("token");
         return cookieSerializer;
     }
 
