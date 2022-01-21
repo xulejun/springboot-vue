@@ -21,6 +21,11 @@
         </el-form-item>
         <el-button style="width: 100%" type="primary" @click="login" @keydown.enter.native="login">登 录</el-button>
         <br>
+        <el-button style="width: 100%;margin-top: 10px" type="primary"
+                   onclick="window.location.href = 'https://api.weibo.com/oauth2/authorize?client_id=2073363660&response_type=code&redirect_uri=http://106.12.154.159:8096/login/oauth2'">
+          使 用 微 博 登 录
+        </el-button>
+        <br>
         <el-button style="width: 100%;margin-top: 10px" type="primary" @click="$router.push('/register')">注 册
         </el-button>
       </el-form>
@@ -53,7 +58,6 @@ export default {
   },
   created() {
     request.get("/login/preLogin").then(res => {
-      console.log(res.data);
       if (res.data) {
         sessionStorage.setItem("user", JSON.stringify(res.data));
         this.$router.push("/highCharts");
