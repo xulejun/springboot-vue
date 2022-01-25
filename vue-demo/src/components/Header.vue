@@ -11,7 +11,7 @@
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click="$router.push('/personal')">个人信息</el-dropdown-item>
-            <el--dropdownitem @click="exit">退出系统</el--dropdownitem>
+            <el-dropdown-item @click="exit">退出系统</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
