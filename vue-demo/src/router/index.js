@@ -6,7 +6,7 @@ const routes = [
         path: '/',
         name: 'Layout',
         component: Layout,
-        redirect: '/user',
+        redirect: '/highCharts',
         children: [
             {
                 path: 'user',

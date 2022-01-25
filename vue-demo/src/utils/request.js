@@ -15,11 +15,11 @@ request.interceptors.request.use(config => {
     config.headers['Content-Type'] = 'application/json;charset=utf-8';
     // config.headers['token'] = user.token; // 设置请求头
 
-    // 取出sessionStorage的用户缓存
-    let userJson = sessionStorage.getItem("user");
-    if (!userJson) {
-        router.push('/login');
-    }
+    // 登录拦截
+    // let userJson = sessionStorage.getItem("user");
+    // if (!userJson) {
+    //     router.push('/login');
+    // }
     return config
 }, error => {
     return Promise.reject(error)
