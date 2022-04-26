@@ -125,7 +125,7 @@ public class LoginController {
         if (ObjectUtil.isEmpty(selectUser)) {
             return Result.error("-1", "用户名不存在");
         }
-        // 用 security 框架自带的API做密码匹配校验
+        // 用 security 框架自带的API做密码匹配校验（SHA-256+随机盐+密钥对密码）
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         boolean matches = passwordEncoder.matches(user.getPassword(), selectUser.getPassword());
         if (!matches) {
