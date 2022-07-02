@@ -10,7 +10,6 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- *
  * @author lejunxu
  */
 @Service
@@ -22,6 +21,7 @@ public class GarlicServiceImpl extends ServiceImpl<GarlicMapper, Garlic> impleme
     public List<Garlic> getOneYearData() {
         return garlicMapper.getOneYearData();
     }
+
     @Override
     public List<Garlic> getThreeYearData() {
         return garlicMapper.getThreeYearData();
