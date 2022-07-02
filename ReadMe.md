@@ -54,7 +54,7 @@
 
 - 需安装nodeJs
 - 在vue-demo文件下运行 `npm install`
-- IDEA 可通过debug运行添加参数
+- IDEA 可通过《Edit Configuration》创建《npm》启动模板
     - package.json：选择vue-demo下的 package.json
     - Command：run
     - Script：server
