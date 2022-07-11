@@ -28,7 +28,7 @@ public class GarlicJob {
     @Autowired
     GarlicService garlicService;
 
-//    @Scheduled(fixedDelay = 1000)     // cron表达式：当前方法执行完毕后，再过1s后执行此方法
+    //    @Scheduled(fixedDelay = 1000)     // cron表达式：当前方法执行完毕后，再过1s后执行此方法
     @Scheduled(cron = "0 0 12 * * ? ")  // 每天中午12点执行
     public void startJob() throws Exception {
 //        DateTime dateTime = new DateTime();

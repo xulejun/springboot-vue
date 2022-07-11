@@ -8,6 +8,7 @@ import com.legendxu.manager.service.OrderInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 /**
@@ -57,8 +58,8 @@ public class OrderInfoController {
      */
     @GetMapping("/pageFindOrder")
     public Result<?> pageFindOrder(@RequestParam(defaultValue = "1") Integer pageNum,
-                                     @RequestParam(defaultValue = "10") Integer pageSize,
-                                     @RequestParam(defaultValue = "") String search) {
+                                   @RequestParam(defaultValue = "10") Integer pageSize,
+                                   @RequestParam(defaultValue = "") String search) {
         Page<OrderInfo> page = orderService.page(new Page<>(pageNum, pageSize), Wrappers.<OrderInfo>lambdaQuery().like(OrderInfo::getSubject, search));
         return Result.success(page);
     }
